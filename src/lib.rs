@@ -12,10 +12,11 @@ pub struct TicTacToe {
 
 impl TicTacToe {
     const INDEX_COLOR: ansi_term::Color = RGB(100, 100, 100);
+    const WIN_COLOR: ansi_term::Color = RGB(255, 0, 0);
     const LINES_TO_CHECK: [[usize; 3]; 8] = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],    // rows
         [0, 3, 6], [1, 4, 7], [2, 5, 8],    // columns
-        [0, 4, 8], [6, 4, 2]                // digs
+        [0, 4, 8], [6, 4, 2]                // diags
     ];
 
     pub fn new() -> TicTacToe {
@@ -28,7 +29,7 @@ impl TicTacToe {
     fn get_char_display(&self, i: usize, line: Option<&[usize; 3]>) -> String {
         if let Some(line) = line { 
             if line.contains(&i) {
-                return RGB(255, 0, 0).paint(self.board[i].to_string()).to_string();
+                return Self::WIN_COLOR.paint(self.board[i].to_string()).to_string();
             }
         }
 
