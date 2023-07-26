@@ -1,4 +1,5 @@
-use ttt_rust::TicTacToe;
+mod ttt;
+use ttt::TicTacToe;
 use std::io;
 use std::io::Write;
 
