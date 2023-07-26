@@ -1,37 +1,9 @@
-use std::fmt;
+mod ttt_enums;
+use ttt_enums::player2piece;
+use ttt_enums::PlayerPiece;
+use ttt_enums::Player;
 
-#[derive(Debug, Copy, Clone)]
-pub enum PlayerPiece {
-    NULL, X, O 
-}
-
-impl fmt::Display for PlayerPiece {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match self {
-            PlayerPiece::X => write!(f, "X"),
-            PlayerPiece::O => write!(f, "O"),
-            PlayerPiece::NULL => write!(f, "-"),
-        }
-    }
-}
-
-#[derive(Debug, Copy, Clone)]
-pub enum Player {
-    X, O,
-}
-
-pub fn player2piece(player: &Player) -> PlayerPiece {
-    match player {
-        Player::X => PlayerPiece::X,
-        Player::O => PlayerPiece::O,
-    }
-}
-
-impl fmt::Display for Player {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        player2piece(&self).fmt(f)
-    }
-}
+use ansi_term::Color::RGB;
 
 pub struct TicTacToe {
     board: [PlayerPiece; 9],
@@ -39,6 +11,8 @@ pub struct TicTacToe {
 }
 
 impl TicTacToe {
+    const INDEX_COLOR: ansi_term::Color = RGB(100, 100, 100);
+
     pub fn new() -> TicTacToe {
         let initial_board = [PlayerPiece::NULL; 9];
         TicTacToe { board: initial_board, playing: Player::X }
@@ -46,12 +20,48 @@ impl TicTacToe {
 
     pub fn get_playing(&self) -> Player { self.playing }
 
-    pub fn print_board(&self) {
-        for (i, piece) in self.board.iter().enumerate() {
-            print!("{}", piece);
-            if i % 3 == 2 {
-                println!();
-            }
+    fn print_row(&self, range: std::ops::Range<usize>) {
+        for i in range {
+            let c = if self.board[i] != PlayerPiece::NULL {
+                self.board[i].to_string()
+            } else {
+                Self::INDEX_COLOR.paint(i.to_string()).to_string()
+            };
+            print!("| {} ", c);
         }
+        println!("|");
     }
+
+    pub fn print_board(&self) {
+        println!(" --- --- --- ");
+        self.print_row(0..3);
+        println!(" --- --- --- ");
+        self.print_row(3..6);
+        println!(" --- --- --- ");
+        self.print_row(6..9);
+        println!(" --- --- --- ");
+    }
+
+    fn flip_playing(&mut self) {
+        self.playing = match self.playing {
+            Player::X => Player::O,
+            Player::O => Player::X
+        };
+    }
+
+    pub fn play_at(&mut self, index: usize) -> Result<(), &str> {
+        if index >= 9 {
+            return Err("The index should be between 0 and 8 inclusive");
+        }
+
+        match self.board[index] {
+            PlayerPiece::NULL => self.board[index] = player2piece(&self.playing),
+            _ => return Err("There is already a piece at that index")
+        }
+        
+        self.flip_playing();
+
+        Ok(())
+    }
+
 }
