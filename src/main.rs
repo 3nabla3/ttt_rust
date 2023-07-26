@@ -15,7 +15,7 @@ fn main() {
     let mut ttt = TicTacToe::new();
     ttt.print_board();
 
-    for _ in 0..10 {
+    while ttt.has_empty_squares() {
         println!("{}'s turn to play", ttt.get_playing());
         let user_input = get_input();
 
@@ -24,6 +24,11 @@ fn main() {
             continue;
         }
 
+        if let Some(line) = ttt.check_win() {
+            ttt.print_board_win(line);
+            println!("Player {} wins!", ttt.get_other_player());
+            break;
+        }
         ttt.print_board();
     }
 }

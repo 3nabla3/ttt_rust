@@ -12,6 +12,11 @@ pub struct TicTacToe {
 
 impl TicTacToe {
     const INDEX_COLOR: ansi_term::Color = RGB(100, 100, 100);
+    const LINES_TO_CHECK: [[usize; 3]; 8] = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],    // rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],    // columns
+        [0, 4, 8], [6, 4, 2]                // digs
+    ];
 
     pub fn new() -> TicTacToe {
         let initial_board = [PlayerPiece::NULL; 9];
@@ -20,13 +25,23 @@ impl TicTacToe {
 
     pub fn get_playing(&self) -> Player { self.playing }
 
-    fn print_row(&self, range: std::ops::Range<usize>) {
+    fn get_char_display(&self, i: usize, line: Option<&[usize; 3]>) -> String {
+        if let Some(line) = line { 
+            if line.contains(&i) {
+                return RGB(255, 0, 0).paint(self.board[i].to_string()).to_string();
+            }
+        }
+
+        if self.board[i] == PlayerPiece::NULL {
+            return Self::INDEX_COLOR.paint(i.to_string()).to_string();
+        }
+
+        self.board[i].to_string()
+    }
+
+    fn print_row(&self, range: std::ops::Range<usize>, line: Option<&[usize; 3]>) {
         for i in range {
-            let c = if self.board[i] != PlayerPiece::NULL {
-                self.board[i].to_string()
-            } else {
-                Self::INDEX_COLOR.paint(i.to_string()).to_string()
-            };
+            let c = self.get_char_display(i, line);
             print!("| {} ", c);
         }
         println!("|");
@@ -34,19 +49,33 @@ impl TicTacToe {
 
     pub fn print_board(&self) {
         println!(" --- --- --- ");
-        self.print_row(0..3);
+        self.print_row(0..3, None);
         println!(" --- --- --- ");
-        self.print_row(3..6);
+        self.print_row(3..6, None);
         println!(" --- --- --- ");
-        self.print_row(6..9);
+        self.print_row(6..9, None);
+        println!(" --- --- --- ");
+    }
+    
+    pub fn print_board_win(&self, line: &[usize; 3]) {
+        println!(" --- --- --- ");
+        self.print_row(0..3, Some(line));
+        println!(" --- --- --- ");
+        self.print_row(3..6, Some(line));
+        println!(" --- --- --- ");
+        self.print_row(6..9, Some(line));
         println!(" --- --- --- ");
     }
 
-    fn flip_playing(&mut self) {
-        self.playing = match self.playing {
+    pub fn get_other_player(&self) -> Player {
+        match self.playing {
             Player::X => Player::O,
             Player::O => Player::X
-        };
+        }
+    }
+
+    fn flip_playing(&mut self) {
+        self.playing = self.get_other_player();
     }
 
     pub fn play_at(&mut self, index: usize) -> Result<(), &str> {
@@ -64,4 +93,21 @@ impl TicTacToe {
         Ok(())
     }
 
+    pub fn check_win(&self) -> Option<&[usize; 3]> {
+        // we only have to check if the player that played last 
+        // made a 3 in a row
+        let other_piece = player2piece(&self.get_other_player());
+
+        Self::LINES_TO_CHECK.iter().find(|line| {
+
+            self.board[line[0]] == other_piece &&
+            self.board[line[1]] == other_piece &&
+            self.board[line[2]] == other_piece
+
+        })
+    }
+
+    pub fn has_empty_squares(&self) -> bool {
+        self.board.contains(&PlayerPiece::NULL)
+    }
 }
