@@ -1,10 +1,11 @@
 mod ttt_enums;
-use ttt_enums::player2piece;
-use ttt_enums::PlayerPiece;
-use ttt_enums::Player;
+pub use ttt_enums::player2piece;
+pub use ttt_enums::PlayerPiece;
+pub use ttt_enums::Player;
 
 use ansi_term::Color::RGB;
 
+#[derive(Debug)]
 pub struct TicTacToe {
     board: [PlayerPiece; 9],
     playing: Player,
@@ -24,7 +25,15 @@ impl TicTacToe {
         TicTacToe { board: initial_board, playing: Player::X }
     }
 
+    pub fn new_with(board: [PlayerPiece; 9], playing: Player) -> TicTacToe {
+        TicTacToe { board, playing }
+    }
+
     pub fn get_playing(&self) -> Player { self.playing }
+
+    pub fn get_board(&self) -> &[PlayerPiece; 9] {
+        &self.board 
+    }
 
     fn get_char_display(&self, i: usize, line: Option<&[usize; 3]>) -> String {
         if let Some(line) = line { 
