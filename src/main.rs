@@ -1,10 +1,10 @@
-mod ttt;
 mod minimax;
+mod ttt;
 
-use ttt::TicTacToe;
 use minimax::Minimax;
 use std::io;
 use std::io::Write;
+use ttt::TicTacToe;
 
 fn get_input() -> usize {
     loop {
@@ -12,7 +12,9 @@ fn get_input() -> usize {
         io::stdout().flush().unwrap();
 
         let mut user_input = String::new();
-        io::stdin().read_line(&mut user_input).expect("Failed to read line");
+        io::stdin()
+            .read_line(&mut user_input)
+            .expect("Failed to read line");
 
         match user_input.trim().parse() {
             Ok(parsed) => return parsed,
@@ -27,14 +29,14 @@ fn get_input() -> usize {
 fn main() {
     let mut ttt = TicTacToe::new();
 
-    let mm = Minimax::new(ttt::Player::X);
+    let mm = Minimax::new(ttt::Player::O);
 
     ttt.print_board();
 
     while ttt.has_empty_squares() {
         let playing = ttt.get_playing();
-        println!("{}'s turn to play", playing); 
-        
+        println!("{}'s turn to play", playing);
+
         let input = if mm.get_playing() == playing {
             mm.get_move(&ttt)
         } else {
@@ -51,7 +53,7 @@ fn main() {
             println!("Player {} wins!", ttt.get_other_player());
             break;
         }
-        
+
         ttt.print_board();
     }
 }

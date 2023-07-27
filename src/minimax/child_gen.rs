@@ -1,6 +1,6 @@
-use crate::TicTacToe;
-use crate::ttt::PlayerPiece;
 use crate::ttt::player2piece;
+use crate::ttt::PlayerPiece;
+use crate::TicTacToe;
 
 pub struct ChildGen<'a> {
     ttt: &'a TicTacToe,
@@ -8,7 +8,10 @@ pub struct ChildGen<'a> {
 }
 
 pub fn generate_children(ttt: &TicTacToe) -> ChildGen {
-    ChildGen { ttt, next_idx_to_check: 0 }
+    ChildGen {
+        ttt,
+        next_idx_to_check: 0,
+    }
 }
 
 impl Iterator for ChildGen<'_> {
@@ -16,7 +19,6 @@ impl Iterator for ChildGen<'_> {
 
     fn next(&mut self) -> Option<Self::Item> {
         for i in self.next_idx_to_check..9 {
-
             if self.ttt.get_board()[i] == PlayerPiece::NULL {
                 let mut board = self.ttt.get_board().clone();
                 board[i] = player2piece(&self.ttt.get_playing());
@@ -25,11 +27,9 @@ impl Iterator for ChildGen<'_> {
                 self.next_idx_to_check = i + 1;
                 return Some((i, child));
             }
-
         }
         None
     }
-
 }
 
 #[cfg(test)]
@@ -37,12 +37,11 @@ mod tests {
     use super::*;
     use crate::ttt::Player;
 
-
     #[test]
     fn test_child_gen_count() {
         let ttt = TicTacToe::new();
         let children = generate_children(&ttt);
-        
+
         assert_eq!(children.count(), 9);
     }
 
@@ -53,31 +52,34 @@ mod tests {
 
         let (delta, ttt) = children.next().unwrap();
         assert_eq!(delta, 0);
-        assert_eq!(*ttt.get_board(), 
+        assert_eq!(
+            *ttt.get_board(),
             [
-                PlayerPiece::X, PlayerPiece::NULL, PlayerPiece::NULL,
-                PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL,
-                PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL
+                PlayerPiece::X,     PlayerPiece::NULL,  PlayerPiece::NULL,
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL,
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL
             ]
         );
 
         let (delta, ttt) = children.next().unwrap();
         assert_eq!(delta, 1);
-        assert_eq!(*ttt.get_board(), 
+        assert_eq!(
+            *ttt.get_board(),
             [
-                PlayerPiece::NULL, PlayerPiece::X, PlayerPiece::NULL,
-                PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL,
-                PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL
+                PlayerPiece::NULL,  PlayerPiece::X,     PlayerPiece::NULL,
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL,
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL
             ]
         );
 
         let (delta, ttt) = children.next().unwrap();
         assert_eq!(delta, 2);
-        assert_eq!(*ttt.get_board(), 
+        assert_eq!(
+            *ttt.get_board(),
             [
-                PlayerPiece::NULL, PlayerPiece::NULL, PlayerPiece::X,
-                PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL,
-                PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::X,
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL,
+                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL
             ]
         );
     }
@@ -90,13 +92,14 @@ mod tests {
                 PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::X,
                 PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::O
             ],
-            Player::O
+            Player::O,
         );
         let mut children = generate_children(&ttt);
         let (delta, ttt) = children.next().unwrap();
 
         assert_eq!(delta, 3);
-        assert_eq!(*ttt.get_board(), 
+        assert_eq!(
+            *ttt.get_board(),
             [
                 PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
                 PlayerPiece::O,     PlayerPiece::X,  PlayerPiece::X,
@@ -107,13 +110,13 @@ mod tests {
         let (delta, ttt) = children.next().unwrap();
 
         assert_eq!(delta, 6);
-        assert_eq!(*ttt.get_board(), 
+        assert_eq!(
+            *ttt.get_board(),
             [
                 PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
-                PlayerPiece::NULL,     PlayerPiece::X,  PlayerPiece::X,
-                PlayerPiece::O,  PlayerPiece::X,  PlayerPiece::O
+                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::X,
+                PlayerPiece::O,     PlayerPiece::X,  PlayerPiece::O
             ],
         );
     }
-
 }

@@ -1,7 +1,7 @@
 use std::cmp;
 
-use crate::ttt::TicTacToe;
 use crate::ttt::Player;
+use crate::ttt::TicTacToe;
 mod child_gen;
 use child_gen::generate_children;
 use rand::seq::SliceRandom;
@@ -24,7 +24,6 @@ pub struct Minimax {
 }
 
 impl Minimax {
-
     pub fn new(playing: Player) -> Minimax {
         Minimax { playing }
     }
@@ -42,8 +41,6 @@ impl Minimax {
         for (delta, child) in generate_children(ttt) {
             let mut node = Node::new(child);
             let score = Self::get_node_score(&mut node, !maximizing);
-            
-            println!("delta: {}\t score: {}", delta, score);
 
             match best_score {
                 Some(bs) => {
@@ -51,11 +48,10 @@ impl Minimax {
                         best_indices.clear();
                         best_indices.push(delta);
                         best_score = Some(score);
-
                     } else if score == bs {
                         best_indices.push(delta);
                     }
-                },
+                }
                 None => {
                     best_indices.push(delta);
                     best_score = Some(score);
@@ -63,7 +59,9 @@ impl Minimax {
             }
         }
 
-        *best_indices.choose(&mut rand::thread_rng()).expect("Could not find a best move")
+        *best_indices
+            .choose(&mut rand::thread_rng())
+            .expect("Could not find a best move")
     }
 
     fn get_node_score(node: &mut Node, maximizing: bool) -> i32 {
@@ -77,7 +75,7 @@ impl Minimax {
         }
     }
 
-   fn minimax(node: &mut Node, mut alpha: i32, mut beta: i32, maximizing: bool) -> i32 {
+    fn minimax(node: &mut Node, mut alpha: i32, mut beta: i32, maximizing: bool) -> i32 {
         if node.ttt.check_win().is_some() {
             return Self::static_analysis(&node.ttt);
         } else if !node.ttt.has_empty_squares() {
@@ -85,9 +83,9 @@ impl Minimax {
         }
 
         let mut best_val = if maximizing {
-                std::i32::MIN
+            std::i32::MIN
         } else {
-                std::i32::MAX
+            std::i32::MAX
         };
 
         for (_delta, child) in generate_children(&node.ttt) {
@@ -100,8 +98,7 @@ impl Minimax {
                 if best_val > beta {
                     break;
                 }
-            } 
-            else {
+            } else {
                 best_val = cmp::min(best_val, val);
                 beta = cmp::min(beta, best_val);
                 if best_val < alpha {
@@ -111,6 +108,5 @@ impl Minimax {
         }
 
         best_val
-   }
-
+    }
 }

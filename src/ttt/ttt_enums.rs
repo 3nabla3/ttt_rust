@@ -2,7 +2,9 @@ use std::fmt;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum PlayerPiece {
-    NULL, X, O
+    NULL,
+    X,
+    O,
 }
 
 impl fmt::Display for PlayerPiece {
@@ -17,7 +19,8 @@ impl fmt::Display for PlayerPiece {
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum Player {
-    X, O,
+    X,
+    O,
 }
 
 pub fn player2piece(player: &Player) -> PlayerPiece {
