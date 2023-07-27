@@ -35,6 +35,8 @@ impl Iterator for ChildGen<'_> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::ttt::Player;
+
 
     #[test]
     fn test_child_gen_count() {
@@ -78,6 +80,40 @@ mod tests {
                 PlayerPiece::NULL,PlayerPiece::NULL,PlayerPiece::NULL
             ]
         );
-
     }
+
+    #[test]
+    fn test_child_gen_items2() {
+        let ttt = TicTacToe::new_with(
+            [
+                PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
+                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::X,
+                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::O
+            ],
+            Player::O
+        );
+        let mut children = generate_children(&ttt);
+        let (delta, ttt) = children.next().unwrap();
+
+        assert_eq!(delta, 3);
+        assert_eq!(*ttt.get_board(), 
+            [
+                PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
+                PlayerPiece::O,     PlayerPiece::X,  PlayerPiece::X,
+                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::O
+            ],
+        );
+
+        let (delta, ttt) = children.next().unwrap();
+
+        assert_eq!(delta, 6);
+        assert_eq!(*ttt.get_board(), 
+            [
+                PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
+                PlayerPiece::NULL,     PlayerPiece::X,  PlayerPiece::X,
+                PlayerPiece::O,  PlayerPiece::X,  PlayerPiece::O
+            ],
+        );
+    }
+
 }
