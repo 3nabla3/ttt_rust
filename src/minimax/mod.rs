@@ -205,4 +205,35 @@ mod tests {
         assert_eq!(mm_get_move(&ttt), 0);
     }
 
+    fn play_2_mm(mm_x: &Minimax, mm_o: &Minimax) {
+        let mut ttt = TicTacToe::new();
+
+        while ttt.has_empty_squares() {
+            let input = if ttt.get_playing() == Player::X {
+                mm_x.get_move(&ttt)
+            } else {
+                mm_o.get_move(&ttt)
+            };
+
+            let result = ttt.play_at(input);
+            // the algo should always play a legal move
+            assert!(result.is_ok());
+            
+            let win = ttt.check_win();
+            // the algo should never be beat
+            assert!(win.is_none());
+        }
+    }
+
+    #[test]
+    fn test_always_tie_against_self() {
+        let num_plays = 5;
+
+        let mm_x = Minimax::new(Player::X);
+        let mm_o = Minimax::new(Player::O);
+        
+        for _ in 0..num_plays {
+            play_2_mm(&mm_x, &mm_o);
+        }
+    }
 }
