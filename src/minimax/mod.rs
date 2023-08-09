@@ -110,3 +110,99 @@ impl Minimax {
         best_val
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::ttt::*;
+    use super::*;
+
+    fn mm_get_move(ttt: &TicTacToe) -> usize {
+        let mm = Minimax::new(ttt.get_playing());
+        mm.get_move(&ttt)
+    }
+
+    #[test]
+    fn test_prevent_immediate_loss_row() {
+        use PlayerPiece::*;
+        let ttt = TicTacToe::new_with(
+        [
+            X,      X,      NULL,
+            NULL,   NULL,   NULL,
+            NULL,   O,      NULL,
+        ], Player::O
+        );
+
+        assert_eq!(mm_get_move(&ttt), 2);
+    }
+
+    #[test]
+    fn test_prevent_immediate_loss_col() {
+        use PlayerPiece::*;
+        let ttt = TicTacToe::new_with(
+        [
+            O,      X,      NULL,
+            NULL,   X,      NULL,
+            NULL,   NULL,   NULL,
+        ], Player::O
+        );
+
+        assert_eq!(mm_get_move(&ttt), 7);
+    }
+
+    #[test]
+    fn test_prevent_immediate_loss_diag() {
+        use PlayerPiece::*;
+        let ttt = TicTacToe::new_with(
+        [
+            X,      NULL,   NULL,
+            NULL,   X,      O,
+            NULL,   NULL,   NULL,
+        ], Player::O
+        );
+
+        assert_eq!(mm_get_move(&ttt), 8);
+    }
+
+    #[test]
+    fn test_win_immediate_row() {
+        use PlayerPiece::*;
+        let ttt = TicTacToe::new_with(
+        [
+            NULL,   X,      NULL,
+            NULL,   X,      X,
+            O,      O,      NULL,
+        ], Player::O
+        );
+
+        assert_eq!(mm_get_move(&ttt), 8);
+    }
+
+    #[test]
+    fn test_win_immediate_col() {
+        use PlayerPiece::*;
+        let ttt = TicTacToe::new_with(
+        [
+            NULL,   NULL,   NULL,
+            NULL,   O,      X,
+            X,      O,      X,
+        ], Player::O
+        );
+
+        assert_eq!(mm_get_move(&ttt), 1);
+    }
+
+    #[test]
+    fn test_win_immediate_diag() {
+        use PlayerPiece::*;
+        let ttt = TicTacToe::new_with(
+        [
+            NULL,   NULL,   NULL,
+            NULL,   O,      X,
+            X,      X,      O,
+        ], Player::O
+        );
+
+        assert_eq!(mm_get_move(&ttt), 0);
+    }
+
+}
