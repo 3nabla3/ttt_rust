@@ -55,9 +55,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::X,     PlayerPiece::NULL,  PlayerPiece::NULL,
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL,
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL
+                PlayerPiece::X,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL
             ]
         );
 
@@ -66,9 +72,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::NULL,  PlayerPiece::X,     PlayerPiece::NULL,
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL,
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL
             ]
         );
 
@@ -77,9 +89,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::X,
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL,
-                PlayerPiece::NULL,  PlayerPiece::NULL,  PlayerPiece::NULL
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL
             ]
         );
     }
@@ -88,9 +106,15 @@ mod tests {
     fn test_child_gen_items2() {
         let ttt = TicTacToe::new_with(
             [
-                PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
-                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::X,
-                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::O
+                PlayerPiece::X,
+                PlayerPiece::O,
+                PlayerPiece::O,
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::X,
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::O,
             ],
             Player::O,
         );
@@ -101,9 +125,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
-                PlayerPiece::O,     PlayerPiece::X,  PlayerPiece::X,
-                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::O
+                PlayerPiece::X,
+                PlayerPiece::O,
+                PlayerPiece::O,
+                PlayerPiece::O,
+                PlayerPiece::X,
+                PlayerPiece::X,
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::O
             ],
         );
 
@@ -113,9 +143,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::X,     PlayerPiece::O,  PlayerPiece::O,
-                PlayerPiece::NULL,  PlayerPiece::X,  PlayerPiece::X,
-                PlayerPiece::O,     PlayerPiece::X,  PlayerPiece::O
+                PlayerPiece::X,
+                PlayerPiece::O,
+                PlayerPiece::O,
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::X,
+                PlayerPiece::O,
+                PlayerPiece::X,
+                PlayerPiece::O
             ],
         );
     }

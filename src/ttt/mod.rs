@@ -162,9 +162,15 @@ mod tests {
         assert_eq!(
             ttt.get_board(),
             &[
-                PlayerPiece::NULL, PlayerPiece::NULL, PlayerPiece::NULL,
-                PlayerPiece::NULL, PlayerPiece::NULL, PlayerPiece::NULL,
-                PlayerPiece::NULL, PlayerPiece::NULL, PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
             ]
         );
 
@@ -178,9 +184,15 @@ mod tests {
         assert_eq!(
             ttt.get_board(),
             &[
-                PlayerPiece::X,     PlayerPiece::O,     PlayerPiece::X, 
-                PlayerPiece::O,     PlayerPiece::NULL,  PlayerPiece::NULL,
-                PlayerPiece::NULL,  PlayerPiece::X,     PlayerPiece::O,
+                PlayerPiece::X,
+                PlayerPiece::O,
+                PlayerPiece::X,
+                PlayerPiece::O,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::NULL,
+                PlayerPiece::X,
+                PlayerPiece::O,
             ]
         );
     }

@@ -4,6 +4,7 @@ mod ttt;
 use minimax::Minimax;
 use std::io;
 use std::io::Write;
+use std::time::Duration;
 use ttt::TicTacToe;
 
 fn get_input() -> usize {
@@ -19,7 +20,7 @@ fn get_input() -> usize {
         match user_input.trim().parse() {
             Ok(parsed) => return parsed,
             Err(e) => {
-                println!("Error while getting input: {}", e);
+                eprintln!("Error while getting input: {}", e);
                 continue;
             }
         }
@@ -28,7 +29,6 @@ fn get_input() -> usize {
 
 fn main() {
     let mut ttt = TicTacToe::new();
-
     let mm = Minimax::new(ttt::Player::O);
 
     ttt.print_board();
@@ -38,6 +38,8 @@ fn main() {
         println!("{}'s turn to play", playing);
 
         let input = if mm.get_playing() == playing {
+            // so it does not appear instant from the user's perspective
+            std::thread::sleep(Duration::from_millis(200));
             mm.get_move(&ttt)
         } else {
             get_input()

@@ -8,7 +8,6 @@ use rand::seq::SliceRandom;
 
 pub struct Node {
     ttt: TicTacToe,
-
     pub children: Vec<Box<Node>>,
 }
 
@@ -65,13 +64,13 @@ impl Minimax {
     }
 
     fn get_node_score(node: &mut Node, maximizing: bool) -> i32 {
-        Self::minimax(node, std::i32::MIN, std::i32::MAX, maximizing)
+        Self::minimax(node, i32::MIN, i32::MAX, maximizing)
     }
 
     fn static_analysis(ttt: &TicTacToe) -> i32 {
         match ttt.get_other_player() {
-            Player::X => std::i32::MAX,
-            Player::O => std::i32::MIN,
+            Player::X => i32::MAX,
+            Player::O => i32::MIN,
         }
     }
 
@@ -83,9 +82,9 @@ impl Minimax {
         }
 
         let mut best_val = if maximizing {
-            std::i32::MIN
+            i32::MIN
         } else {
-            std::i32::MAX
+            i32::MAX
         };
 
         for (_delta, child) in generate_children(&node.ttt) {
@@ -113,8 +112,8 @@ impl Minimax {
 
 #[cfg(test)]
 mod tests {
-    use crate::ttt::*;
     use super::*;
+    use crate::ttt::*;
 
     fn mm_get_move(ttt: &TicTacToe) -> usize {
         let mm = Minimax::new(ttt.get_playing());
@@ -125,11 +124,8 @@ mod tests {
     fn test_prevent_immediate_loss_row() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-        [
-            X,      X,      NULL,
-            NULL,   NULL,   NULL,
-            NULL,   O,      NULL,
-        ], Player::O
+            [X, X, NULL, NULL, NULL, NULL, NULL, O, NULL],
+            Player::O
         );
 
         assert_eq!(mm_get_move(&ttt), 2);
@@ -139,11 +135,8 @@ mod tests {
     fn test_prevent_immediate_loss_col() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-        [
-            O,      X,      NULL,
-            NULL,   X,      NULL,
-            NULL,   NULL,   NULL,
-        ], Player::O
+            [O, X, NULL, NULL, X, NULL, NULL, NULL, NULL],
+            Player::O
         );
 
         assert_eq!(mm_get_move(&ttt), 7);
@@ -153,11 +146,8 @@ mod tests {
     fn test_prevent_immediate_loss_diag() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-        [
-            X,      NULL,   NULL,
-            NULL,   X,      O,
-            NULL,   NULL,   NULL,
-        ], Player::O
+            [X, NULL, NULL, NULL, X, O, NULL, NULL, NULL],
+            Player::O
         );
 
         assert_eq!(mm_get_move(&ttt), 8);
@@ -167,11 +157,8 @@ mod tests {
     fn test_win_immediate_row() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-        [
-            NULL,   X,      NULL,
-            NULL,   X,      X,
-            O,      O,      NULL,
-        ], Player::O
+            [NULL, X, NULL, NULL, X, X, O, O, NULL],
+            Player::O
         );
 
         assert_eq!(mm_get_move(&ttt), 8);
@@ -181,11 +168,8 @@ mod tests {
     fn test_win_immediate_col() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-        [
-            NULL,   NULL,   NULL,
-            NULL,   O,      X,
-            X,      O,      X,
-        ], Player::O
+            [NULL, NULL, NULL, NULL, O, X, X, O, X],
+            Player::O
         );
 
         assert_eq!(mm_get_move(&ttt), 1);
@@ -195,11 +179,8 @@ mod tests {
     fn test_win_immediate_diag() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-        [
-            NULL,   NULL,   NULL,
-            NULL,   O,      X,
-            X,      X,      O,
-        ], Player::O
+            [NULL, NULL, NULL, NULL, O, X, X, X, O],
+            Player::O
         );
 
         assert_eq!(mm_get_move(&ttt), 0);
@@ -218,7 +199,7 @@ mod tests {
             let result = ttt.play_at(input);
             // the algo should always play a legal move
             assert!(result.is_ok());
-            
+
             let win = ttt.check_win();
             // the algo should never be beat
             assert!(win.is_none());
@@ -231,7 +212,7 @@ mod tests {
 
         let mm_x = Minimax::new(Player::X);
         let mm_o = Minimax::new(Player::O);
-        
+
         for _ in 0..num_plays {
             play_2_mm(&mm_x, &mm_o);
         }
