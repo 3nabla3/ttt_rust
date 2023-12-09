@@ -2,7 +2,7 @@ use std::fmt;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum PlayerPiece {
-    NULL,
+    Empty,
     X,
     O,
 }
@@ -12,7 +12,7 @@ impl fmt::Display for PlayerPiece {
         match self {
             PlayerPiece::X => write!(f, "X"),
             PlayerPiece::O => write!(f, "O"),
-            PlayerPiece::NULL => write!(f, "-"),
+            PlayerPiece::Empty => write!(f, "-"),
         }
     }
 }
@@ -32,6 +32,6 @@ pub fn player2piece(player: &Player) -> PlayerPiece {
 
 impl fmt::Display for Player {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        player2piece(&self).fmt(f)
+        player2piece(self).fmt(f)
     }
 }

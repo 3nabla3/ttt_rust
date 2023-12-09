@@ -1,4 +1,5 @@
 mod ttt_enums;
+
 pub use ttt_enums::player2piece;
 pub use ttt_enums::Player;
 pub use ttt_enums::PlayerPiece;
@@ -26,7 +27,7 @@ impl TicTacToe {
     ];
 
     pub fn new() -> TicTacToe {
-        let initial_board = [PlayerPiece::NULL; 9];
+        let initial_board = [PlayerPiece::Empty; 9];
         TicTacToe {
             board: initial_board,
             playing: Player::X,
@@ -52,7 +53,7 @@ impl TicTacToe {
             }
         }
 
-        if self.board[i] == PlayerPiece::NULL {
+        if self.board[i] == PlayerPiece::Empty {
             return Self::INDEX_COLOR.paint(i.to_string()).to_string();
         }
 
@@ -104,7 +105,7 @@ impl TicTacToe {
         }
 
         match self.board[index] {
-            PlayerPiece::NULL => self.board[index] = player2piece(&self.playing),
+            PlayerPiece::Empty => self.board[index] = player2piece(&self.playing),
             _ => return Err("There is already a piece at that index"),
         }
 
@@ -126,7 +127,7 @@ impl TicTacToe {
     }
 
     pub fn has_empty_squares(&self) -> bool {
-        self.board.contains(&PlayerPiece::NULL)
+        self.board.contains(&PlayerPiece::Empty)
     }
 }
 
@@ -162,15 +163,15 @@ mod tests {
         assert_eq!(
             ttt.get_board(),
             &[
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
             ]
         );
 
@@ -188,9 +189,9 @@ mod tests {
                 PlayerPiece::O,
                 PlayerPiece::X,
                 PlayerPiece::O,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
                 PlayerPiece::O,
             ]

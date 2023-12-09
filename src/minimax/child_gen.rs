@@ -19,8 +19,9 @@ impl Iterator for ChildGen<'_> {
 
     fn next(&mut self) -> Option<Self::Item> {
         for i in self.next_idx_to_check..9 {
-            if self.ttt.get_board()[i] == PlayerPiece::NULL {
-                let mut board = self.ttt.get_board().clone();
+            if self.ttt.get_board()[i] == PlayerPiece::Empty {
+                // The deref will copy the board
+                let mut board = *self.ttt.get_board();
                 board[i] = player2piece(&self.ttt.get_playing());
 
                 let child = TicTacToe::new_with(board, self.ttt.get_other_player());
@@ -56,14 +57,14 @@ mod tests {
             *ttt.get_board(),
             [
                 PlayerPiece::X,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty
             ]
         );
 
@@ -72,15 +73,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty
             ]
         );
 
@@ -89,15 +90,15 @@ mod tests {
         assert_eq!(
             *ttt.get_board(),
             [
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL,
-                PlayerPiece::NULL
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty,
+                PlayerPiece::Empty
             ]
         );
     }
@@ -109,10 +110,10 @@ mod tests {
                 PlayerPiece::X,
                 PlayerPiece::O,
                 PlayerPiece::O,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
                 PlayerPiece::X,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
                 PlayerPiece::O,
             ],
@@ -131,7 +132,7 @@ mod tests {
                 PlayerPiece::O,
                 PlayerPiece::X,
                 PlayerPiece::X,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
                 PlayerPiece::O
             ],
@@ -146,7 +147,7 @@ mod tests {
                 PlayerPiece::X,
                 PlayerPiece::O,
                 PlayerPiece::O,
-                PlayerPiece::NULL,
+                PlayerPiece::Empty,
                 PlayerPiece::X,
                 PlayerPiece::X,
                 PlayerPiece::O,

@@ -2,18 +2,20 @@ use std::cmp;
 
 use crate::ttt::Player;
 use crate::ttt::TicTacToe;
+
 mod child_gen;
+
 use child_gen::generate_children;
 use rand::seq::SliceRandom;
 
 pub struct Node {
     ttt: TicTacToe,
-    pub children: Vec<Box<Node>>,
+    pub children: Vec<Node>,  // Vector elements are already on the heap
 }
 
 impl Node {
     pub fn new(ttt: TicTacToe) -> Node {
-        let children: Vec<Box<Node>> = Vec::new();
+        let children: Vec<Node> = Vec::new();
         Node { ttt, children }
     }
 }
@@ -119,15 +121,15 @@ mod tests {
 
     fn mm_get_move(ttt: &TicTacToe) -> usize {
         let mm = Minimax::new(ttt.get_playing());
-        mm.get_move(&ttt)
+        mm.get_move(ttt)
     }
 
     #[test]
     fn test_prevent_immediate_loss_row() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-            [X, X, NULL, NULL, NULL, NULL, NULL, O, NULL],
-            Player::O
+            [X, X, Empty, Empty, Empty, Empty, Empty, O, Empty],
+            Player::O,
         );
 
         assert_eq!(mm_get_move(&ttt), 2);
@@ -137,8 +139,8 @@ mod tests {
     fn test_prevent_immediate_loss_col() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-            [O, X, NULL, NULL, X, NULL, NULL, NULL, NULL],
-            Player::O
+            [O, X, Empty, Empty, X, Empty, Empty, Empty, Empty],
+            Player::O,
         );
 
         assert_eq!(mm_get_move(&ttt), 7);
@@ -148,8 +150,8 @@ mod tests {
     fn test_prevent_immediate_loss_diag() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-            [X, NULL, NULL, NULL, X, O, NULL, NULL, NULL],
-            Player::O
+            [X, Empty, Empty, Empty, X, O, Empty, Empty, Empty],
+            Player::O,
         );
 
         assert_eq!(mm_get_move(&ttt), 8);
@@ -159,8 +161,8 @@ mod tests {
     fn test_win_immediate_row() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-            [NULL, X, NULL, NULL, X, X, O, O, NULL],
-            Player::O
+            [Empty, X, Empty, Empty, X, X, O, O, Empty],
+            Player::O,
         );
 
         assert_eq!(mm_get_move(&ttt), 8);
@@ -170,8 +172,8 @@ mod tests {
     fn test_win_immediate_col() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-            [NULL, NULL, NULL, NULL, O, X, X, O, X],
-            Player::O
+            [Empty, Empty, Empty, Empty, O, X, X, O, X],
+            Player::O,
         );
 
         assert_eq!(mm_get_move(&ttt), 1);
@@ -181,8 +183,8 @@ mod tests {
     fn test_win_immediate_diag() {
         use PlayerPiece::*;
         let ttt = TicTacToe::new_with(
-            [NULL, NULL, NULL, NULL, O, X, X, X, O],
-            Player::O
+            [Empty, Empty, Empty, Empty, O, X, X, X, O],
+            Player::O,
         );
 
         assert_eq!(mm_get_move(&ttt), 0);
