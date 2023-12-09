@@ -23,6 +23,8 @@ pub struct Minimax {
 }
 
 impl Minimax {
+    const DAMP_FACTOR: f32 = 0.99;
+
     pub fn new(playing: Player) -> Minimax {
         Minimax { playing }
     }
@@ -106,7 +108,7 @@ impl Minimax {
             }
         }
 
-        best_val
+        (best_val as f32 * Self::DAMP_FACTOR) as i32
     }
 }
 
