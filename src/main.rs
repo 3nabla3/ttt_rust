@@ -4,7 +4,6 @@ mod ttt;
 use minimax::Minimax;
 use std::io;
 use std::io::Write;
-use std::time::Duration;
 use ttt::TicTacToe;
 
 fn get_input() -> usize {
@@ -29,17 +28,16 @@ fn get_input() -> usize {
 
 fn main() {
     let mut ttt = TicTacToe::new();
+    // change this line to play second or first
     let mm = Minimax::new(ttt::Player::O);
 
     ttt.print_board();
 
-    while ttt.has_empty_squares() {
+    loop {
         let playing = ttt.get_playing();
         println!("{}'s turn to play", playing);
 
         let input = if mm.get_playing() == playing {
-            // so it does not appear instant from the user's perspective
-            std::thread::sleep(Duration::from_millis(200));
             mm.get_move(&ttt)
         } else {
             get_input()
@@ -57,5 +55,10 @@ fn main() {
         }
 
         ttt.print_board();
+
+        if !ttt.has_empty_squares() {
+            println!("It's a tie!");
+            break;
+        }
     }
 }
