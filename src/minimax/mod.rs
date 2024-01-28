@@ -10,7 +10,7 @@ use rand::seq::SliceRandom;
 
 pub struct Node {
     ttt: TicTacToe,
-    pub children: Vec<Node>,  // Vector elements are already on the heap
+    pub children: Vec<Node>
 }
 
 impl Node {
@@ -78,7 +78,7 @@ impl Minimax {
         }
     }
 
-    fn minimax(node: &mut Node, mut alpha: i32, mut beta: i32, maximizing: bool) -> i32 {
+    fn minimax(node: &Node, mut alpha: i32, mut beta: i32, maximizing: bool) -> i32 {
         if node.ttt.check_win().is_some() {
             return Self::static_analysis(&node.ttt);
         } else if !node.ttt.has_empty_squares() {
@@ -92,8 +92,8 @@ impl Minimax {
         };
 
         for (_delta, child) in generate_children(&node.ttt) {
-            let mut child_node = Node::new(child);
-            let val = Self::minimax(&mut child_node, alpha, beta, !maximizing);
+            let child_node = Node::new(child);
+            let val = Self::minimax(&child_node, alpha, beta, !maximizing);
 
             if maximizing {
                 best_val = cmp::max(best_val, val);
