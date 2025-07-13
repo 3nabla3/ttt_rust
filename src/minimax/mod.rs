@@ -10,13 +10,11 @@ use rand::seq::SliceRandom;
 
 pub struct Node {
     ttt: TicTacToe,
-    pub children: Vec<Node>
 }
 
 impl Node {
     pub fn new(ttt: TicTacToe) -> Node {
-        let children: Vec<Node> = Vec::new();
-        Node { ttt, children }
+        Node { ttt }
     }
 }
 
@@ -85,11 +83,7 @@ impl Minimax {
             return 0;
         }
 
-        let mut best_val = if maximizing {
-            i32::MIN
-        } else {
-            i32::MAX
-        };
+        let mut best_val = if maximizing { i32::MIN } else { i32::MAX };
 
         for (_delta, child) in generate_children(&node.ttt) {
             let child_node = Node::new(child);
@@ -160,10 +154,7 @@ mod tests {
     #[test]
     fn test_win_immediate_row() {
         use PlayerPiece::*;
-        let ttt = TicTacToe::new_with(
-            [Empty, X, Empty, Empty, X, X, O, O, Empty],
-            Player::O,
-        );
+        let ttt = TicTacToe::new_with([Empty, X, Empty, Empty, X, X, O, O, Empty], Player::O);
 
         assert_eq!(mm_get_move(&ttt), 8);
     }
@@ -171,10 +162,7 @@ mod tests {
     #[test]
     fn test_win_immediate_col() {
         use PlayerPiece::*;
-        let ttt = TicTacToe::new_with(
-            [Empty, Empty, Empty, Empty, O, X, X, O, X],
-            Player::O,
-        );
+        let ttt = TicTacToe::new_with([Empty, Empty, Empty, Empty, O, X, X, O, X], Player::O);
 
         assert_eq!(mm_get_move(&ttt), 1);
     }
@@ -182,10 +170,7 @@ mod tests {
     #[test]
     fn test_win_immediate_diag() {
         use PlayerPiece::*;
-        let ttt = TicTacToe::new_with(
-            [Empty, Empty, Empty, Empty, O, X, X, X, O],
-            Player::O,
-        );
+        let ttt = TicTacToe::new_with([Empty, Empty, Empty, Empty, O, X, X, X, O], Player::O);
 
         assert_eq!(mm_get_move(&ttt), 0);
     }

@@ -19,7 +19,7 @@ fn get_input() -> usize {
         match user_input.trim().parse() {
             Ok(parsed) => return parsed,
             Err(e) => {
-                eprintln!("Error while getting input: {}", e);
+                eprintln!("Error while getting input: {e}");
                 continue;
             }
         }
@@ -35,7 +35,7 @@ fn main() {
 
     loop {
         let playing = ttt.get_playing();
-        println!("{}'s turn to play", playing);
+        println!("{playing}'s turn to play");
 
         let input = if mm.get_playing() == playing {
             mm.get_move(&ttt)
@@ -44,7 +44,7 @@ fn main() {
         };
 
         if let Err(e) = ttt.play_at(input) {
-            println!("{}", e);
+            println!("{e}");
             continue;
         }
 

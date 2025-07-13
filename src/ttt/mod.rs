@@ -63,7 +63,7 @@ impl TicTacToe {
     fn print_row(&self, range: std::ops::Range<usize>, line: Option<&[usize; 3]>) {
         for i in range {
             let c = self.get_char_display(i, line);
-            print!("| {} ", c);
+            print!("| {c} ");
         }
         println!("|");
     }
